@@ -1,0 +1,83 @@
+Jess is Copyright (c) Jonathan Barker, 2002.
+
+Last updated 20/08/2002 11.15BST
+
+It is not for general relase at this time. Those who wish
+to use the program should consult me first. [This is not
+because I wish to restrict its use, but because a proper
+licensing scheme has not been implemented, and it is not
+yet in a state where I wish to support wide use]
+
+INTRODUCTION
+
+This is Jess version 0.3(beta). The program is still under
+development so I'm only making a Linux binary available at
+present. If you require the source for some reason come
+to see me...
+
+If you have requests for modification or addition of new
+features, please let me know. The source is still very
+fluid, so if you want feature X, then tell me!
+
+OPERATING JESS
+
+[At present, Jess is a replacement for TESS, but more 
+general templates have not yet been implemented].
+
+jess <template-list> <file-list> <rmsd> <distance> [flags] 
+
+template-list is a list of filenames of TESS templates
+file-list is a list of filenames of PDB files to search
+rmsd is the RMSD cutoff at which results are reported
+distance is the distance cutoff used to guide the search
+
+As a rough estimate the distance cutoff should be 1.5-4 times
+the RMSD cutoff. But if you make it very large execution 
+time will suffer. The smaller the better!
+
+If [flags] is the single character 'f' then Jess outputs the
+PDB file currently being processed on stderr.
+
+Example:
+
+> cd examples
+> ../jess templates testfiles 2 3 > output
+
+The output file is a flat file containing PDB fragments 
+preceded by a single record of the form
+
+REMARK pdb-code rmsd template-file [some debugging info]
+
+where pdb-code is the PDB code of the hit file, rmsd is 
+the rmsd after optimal superposition with the template and
+template-file is the file containing the template which 
+was hit.
+
+The debugging info currently contains Det=number and
+log(E)~number. If Det is not 1.0 then the superposition
+is not valid (tell me about it please!). log(E) is a
+preliminary statistical measure which should be used
+with caution. Anything less than -4 should be a very
+good hit and -3 is OK. (E is the expected number of hits
+at random).
+
+The PDB fragment which follows the remark is transformed 
+into the coordinate frame of the template by optimal
+superposition.
+
+Each hit is followed by a blank line.
+
+CAVEATS!
+
+Jess and TESS rmsds are not the same!!!! This is because 
+TESS aligns the site using a reference group, and Jess 
+performs optimal superposition. In many cases this is 
+desirable (see template_02 where there are many false
+negatives in TESS, but few in Jess). The Jess rmsd will
+*always* be <= the TESS rmsd. So cutoffs may well need
+to be adjusted.
+
+BUGS!
+
+Probably many. If you find one, tell me about it please!
+

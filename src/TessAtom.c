@@ -289,6 +289,27 @@ static int TessAtom_isCarbon(const Atom *A)
 	return A->name[0]=='_' && A->name[1]=='C' ? 1:0;
 }
 
+//Riziotis 
+static int TessAtom_isInSamePosition(const TessAtom *T, const Atom *A)
+{
+	int k;
+
+	for(k=0; k<T->nameCount; k++)
+	{
+		if(A->name[0]=='_')
+		{
+			if(A->name[2]==T->name[k][2]) return 1;
+		}
+		else
+		{
+			if(A->name[1]==T->name[k][1] && A->name[2]==T->name[k][2]) return 1;
+		}
+	}
+
+	return 0;
+}
+//End Riziotis
+
 static int TessAtom_isMainChain(const Atom *A)
 {
 	if(strcasecmp(A->name,"_CA_")==0) return 1;
@@ -401,7 +422,15 @@ int TessAtom_match(const TessAtom *T, const Atom *A)
 
 		return TessAtom_matchResName(T,A);
 
-		// Gail's options follow (no residue specificity)
+	//Riziotis options
+	case 8:
+		//Any atom in the same position in the given residue(s)
+		
+		if(!TessAtom_isInSamePosition(T,A)) return 0;
+		return TessAtom_matchResName(T,A);
+
+
+	// Gail's options follow (no residue specificity)
 
 	case 100:
 		// name match

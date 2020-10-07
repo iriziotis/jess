@@ -115,7 +115,7 @@ static void output(
 		A->charge
 		);
 }
-static void search(const char *filename,Jess *J,double tRmsd,double tDistance, int no_transform)
+static void search(const char *filename,Jess *J,double tRmsd,double tDistance, int no_transform, int ignore_chain)
 {
 	Molecule *M;
 	Superposition *sup;
@@ -145,7 +145,7 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance, i
 
 	Q=Jess_query(J,M,tDistance);
 
-	while(JessQuery_next(Q))
+	while(JessQuery_next(Q, ignore_chain), ignore_chain)
 	{
 		T=JessQuery_template(Q);
 
@@ -314,6 +314,7 @@ int main(int argc, char **argv)
 	int count;
 	//Riziotis edit
 	int no_transform=0;
+	int ignore_chain=0;
 
 	if(argc<5 || argc>6) help();
 
@@ -326,6 +327,7 @@ int main(int argc, char **argv)
 			if(*s=='f') feedbackQ=1;
 			//Riziotis edit
 			else if(*s=='n') no_transform=1;
+			else if(*s=='i') ignore_chain=1;
 			else help();
 		}
 	}
@@ -358,7 +360,7 @@ int main(int argc, char **argv)
 		if(strlen(s)==0) continue;
 
 		if(feedbackQ) fprintf(stderr,"%s\n",s);
-		search(buf,J,tRmsd,tDistance,no_transform);
+		search(buf,J,tRmsd,tDistance,no_transform,ignore_chain);
 	}
 
 	fclose(file);

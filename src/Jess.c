@@ -170,7 +170,7 @@ Superposition *JessQuery_superposition(JessQuery *Q)
 	return Q->super;
 }
 
-int JessQuery_next(JessQuery *Q)
+int JessQuery_next(JessQuery *Q, int ignore_chain)
 {
 	Template *T;
 	Atom **A;
@@ -196,7 +196,7 @@ int JessQuery_next(JessQuery *Q)
 			}
 		}
 
-		if((A=Scanner_next(Q->scanner)))
+		if((A=Scanner_next(Q->scanner, ignore_chain)))
 		{
 			Q->atoms=A;
 			T = Q->node->template;

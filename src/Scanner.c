@@ -138,7 +138,7 @@ void Scanner_free(Scanner *S)
 	}
 }
 
-Atom **Scanner_next(Scanner *S)
+Atom **Scanner_next(Scanner *S, int ignore_chain)
 {
 	int j,k;
 	double min,max;
@@ -199,7 +199,7 @@ Atom **Scanner_next(Scanner *S)
 				// up...
 
 				S->atom[k]=S->set[k]->atom[S->index[k]];
-				if(S->template->check(S->template,S->atom,k+1))
+				if(S->template->check(S->template,S->atom,k+1,ignore_chain))
 				{
 					k++;
 				}

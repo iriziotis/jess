@@ -82,7 +82,7 @@ static const double *TessTemplate_position(const Template *T, int k)
 }
 
 
-static int TessTemplate_check(const Template *T, Atom **A,int k)
+static int TessTemplate_check(const Template *T, Atom **A, int k, int ignore_chain)
 {
 	const TessTemplate *J = (const TessTemplate*)&T[1];
 	int i;
@@ -97,6 +97,12 @@ static int TessTemplate_check(const Template *T, Atom **A,int k)
 		d = TessAtom_chainID2(J->atom[i])-TessAtom_chainID2(J->atom[k-1]);
 		//c = A[i]->chainID-A[k-1]->chainID;
 		//d = TessAtom_chainID(J->atom[i])-TessAtom_chainID(J->atom[k-1]);
+
+		if(ignore_chain==1)
+		{
+			c=0;
+			d=0;
+		}
 
 		if(c==0 && d!=0) return 0;
 		if(c!=0 && d==0) return 0;

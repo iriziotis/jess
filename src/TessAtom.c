@@ -290,6 +290,11 @@ static int TessAtom_isCarbon(const Atom *A)
 }
 
 //Riziotis 
+static int TessAtom_isHydrogen(const Atom *A)
+{
+	return A->name[0]=='_' && A->name[1]=='H' ? 1:0;
+}
+
 static int TessAtom_isInSamePosition(const TessAtom *T, const Atom *A)
 {
 	int k;
@@ -383,6 +388,7 @@ int TessAtom_match(const TessAtom *T, const Atom *A)
 		// side-chain atom.
 
 		if(TessAtom_isCarbon(A)) return 0;
+		if(TessAtom_isHydrogen(A)) return 0; // Riziotis - Only match heavy atoms
 		if(TessAtom_isMainChain(A)) return 0;
 		return TessAtom_matchResName(T,A);
 
@@ -390,18 +396,21 @@ int TessAtom_match(const TessAtom *T, const Atom *A)
 		// Any non-carbon atom in the list of residues given...
 
 		if(TessAtom_isCarbon(A)) return 0;
+		if(TessAtom_isHydrogen(A)) return 0; // Riziotis - Only match heavy atoms
 		return TessAtom_matchResName(T,A);
 
 	case 3:
 		// Atom type specified is residue(s) given
 
 		if(!TessAtom_matchType(T,A)) return 0;
+		if(TessAtom_isHydrogen(A)) return 0; // Riziotis - Only match heavy atoms
 		return TessAtom_matchResName(T,A);
 
 	case 4:
 		// Non-carbon main-chain in given residue(s)
 
 		if(TessAtom_isCarbon(A)) return 0;
+		if(TessAtom_isHydrogen(A)) return 0; // Riziotis - Only match heavy atoms
 		if(!TessAtom_isMainChain(A)) return 0;
 		return TessAtom_matchResName(T,A);
 
@@ -409,23 +418,27 @@ int TessAtom_match(const TessAtom *T, const Atom *A)
 		// Any main-chain atom in the given residue(s)
 
 		if(!TessAtom_isMainChain(A)) return 0;
+		if(TessAtom_isHydrogen(A)) return 0; // Riziotis - Only match heavy atoms
 		return TessAtom_matchResName(T,A);
 
 	case 6:
 		// Any side-chain atom in the given residue(s)
 
 		if(TessAtom_isMainChain(A)) return 0;
+		if(TessAtom_isHydrogen(A)) return 0; // Riziotis - Only match heavy atoms
 		return TessAtom_matchResName(T,A);
 
 	case 7:
 		// Any atom (in the specified resdiue)
 
+		if(TessAtom_isHydrogen(A)) return 0; // Riziotis - Only match heavy atoms
 		return TessAtom_matchResName(T,A);
 
 	//Riziotis options
 	case 8:
 		//Any atom in the same position in the given residue(s)
 		
+		if(TessAtom_isHydrogen(A)) return 0; // Riziotis - Only match heavy atoms
 		if(!TessAtom_isInSamePosition(T,A)) return 0;
 		return TessAtom_matchResName(T,A);
 

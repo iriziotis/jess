@@ -145,7 +145,7 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance, i
 
 	Q=Jess_query(J,M,tDistance);
 
-	while(JessQuery_next(Q, ignore_chain), ignore_chain)
+	while(JessQuery_next(Q, ignore_chain))
 	{
 		T=JessQuery_template(Q);
 

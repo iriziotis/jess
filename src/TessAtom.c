@@ -104,7 +104,7 @@ TessAtom *TessAtom_create(const char *s)
 	// 1. Find the number of extra atom names or
 	// residue names...
 
-	q=&s[66]; // Was 54, 66 when we parse distance threshold from temperature field
+	q=&s[54]; // Was 54, 66 when we parse distance threshold from temperature field
 	k=strlen(q);
 	nest=0;
 	rc=ac=1;

@@ -232,6 +232,8 @@ Atom **Scanner_next(Scanner *S, int ignore_chain)
 			dynamic_threshold = S->threshold + S->template->distWeight(S->template, j) + S->template->distWeight(S->template, k);
 			min -= dynamic_threshold;
 			max += dynamic_threshold;
+			//min -= S->threshold;
+			//max += S->threshold;
 			if(min<0.5) min=0.5;
 
 			S->region[j]=Annulus_create(S->atom[j]->x,min,max,3);

@@ -223,17 +223,14 @@ Atom **Scanner_next(Scanner *S, int ignore_chain)
 		// So, there is an active query result at k-1 and
 		// no active query at k; create a new query at
 		// index k and try again (with the same k)
-		
+
 		for(j=0; j<k; j++)
 		{
-
 			S->template->range(S->template,j,k,&min,&max);
 
 			dynamic_threshold = S->threshold + S->template->distWeight(S->template, j) + S->template->distWeight(S->template, k);
 			min -= dynamic_threshold;
 			max += dynamic_threshold;
-			//min -= S->threshold;
-			//max += S->threshold;
 			if(min<0.5) min=0.5;
 
 			S->region[j]=Annulus_create(S->atom[j]->x,min,max,3);

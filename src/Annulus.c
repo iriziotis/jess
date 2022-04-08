@@ -117,6 +117,7 @@ Region *Annulus_create(double *u, double a, double b, int d)
 
 	if(a<0.0) a=0.0;
 	if(b<0.0) b=0.0;
+	//printf("%f, %f\n", a, b)
 
 	A->centre=(double*)&A[1];
 	memcpy(A->centre,u,sizeof(double)*d);

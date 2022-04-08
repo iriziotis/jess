@@ -37,6 +37,7 @@ extern int TessAtom_resSeq(const TessAtom*);
 //Riziotis edit
 extern char TessAtom_chainID1(const TessAtom*);
 extern char TessAtom_chainID2(const TessAtom*);
+extern double TessAtom_distWeight(const TessAtom*);
 //extern char TessAtom_chainID(const TessAtom*);
 
 // ==================================================================

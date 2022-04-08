@@ -23,6 +23,7 @@
 // name[k]				kth atom name alternate
 // resName[k]			kth residue name alternate
 // pos[k]				kth coordinate of position of atom
+// distWeight[k]			kth atom distance threshold modifier (weight)
 // ==================================================================
 
 struct _TessAtom
@@ -37,6 +38,7 @@ struct _TessAtom
 	char **name;
 	char **resName;
 	double pos[3];
+	double distWeight;
 };
 
 // ==================================================================
@@ -90,6 +92,7 @@ TessAtom *TessAtom_create(const char *s)
 	const char *tmp;
 	void *p;
 
+
 	// 0. Parse the record as a standard PDB atom. We must
 	// at least have all fields up to the last coord field.
 
@@ -101,7 +104,7 @@ TessAtom *TessAtom_create(const char *s)
 	// 1. Find the number of extra atom names or
 	// residue names...
 
-	q=&s[54];
+	q=&s[66]; // Was 54, 66 when we parse distance threshold from temperature field
 	k=strlen(q);
 	nest=0;
 	rc=ac=1;
@@ -143,6 +146,7 @@ TessAtom *TessAtom_create(const char *s)
 	A->pos[0] = a.x[0];
 	A->pos[1] = a.x[1];
 	A->pos[2] = a.x[2];
+	A->distWeight = a.tempFactor;
 	A->chainID1 = a.chainID1;
 	A->chainID2 = a.chainID2;
 	//A->chainID = a.chainID;
@@ -264,6 +268,11 @@ char TessAtom_chainID2(const TessAtom *A)
 	return A->chainID2;
 }
 
+double TessAtom_distWeight(const TessAtom *A)
+{
+	return A->distWeight;
+}
+  
 //char TessAtom_chainID(const TessAtom *A)
 //{
 //	return A->chainID;

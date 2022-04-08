@@ -81,6 +81,11 @@ static const double *TessTemplate_position(const Template *T, int k)
 	return TessAtom_position(J->atom[k]);
 }
 
+static double TessTemplate_distWeight(const Template *T, int k)
+{
+	const TessTemplate *J=(const TessTemplate*)&T[1];
+	return TessAtom_distWeight(J->atom[k]);
+}
 
 static int TessTemplate_check(const Template *T, Atom **A, int k, int ignore_chain)
 {
@@ -263,6 +268,7 @@ Template *TessTemplate_create(FILE *file,const char *sym)
 	T->check=TessTemplate_check;
 	T->name=TessTemplate_name;
 	T->logE=TessTemplate_logE;
+	T->distWeight=TessTemplate_distWeight;
 
 	// Set up the data fields
 

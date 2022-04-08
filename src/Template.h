@@ -41,6 +41,7 @@ struct _Template
 	const double *(*position)(const Template*,int);
 	const char *(*name)(const Template*);
 	double (*logE)(const Template*,double,int);
+	double (*distWeight)(const Template*,int);
 };
 
 // ==================================================================

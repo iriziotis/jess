@@ -172,8 +172,6 @@ Atom **Scanner_next(Scanner *S, int ignore_chain)
 				S->atom[0]=S->set[0]->atom[S->index[0]];
 				k++;
 			}
-
-			continue;
 		}
 
 		// So k>0. If there is an active query for this
@@ -228,6 +226,8 @@ Atom **Scanner_next(Scanner *S, int ignore_chain)
 
 			min -= S->threshold;
 			max += S->threshold;
+			//min -= S->threshold + S->template->distWeight(S->template, j);
+			//max += S->threshold + S->template->distWeight(S->template, j);
 			if(min<0.5) min=0.5;
 
 			S->region[j]=Annulus_create(S->atom[j]->x,min,max,3);

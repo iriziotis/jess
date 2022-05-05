@@ -146,7 +146,7 @@ const Atom *Molecule_atom(const Molecule *M, int k)
 
 const char *Molecule_id(const Molecule *M)
 {
-	if(strlen(M->id)==4) return M->id;
+	if(strlen(M->id)==4 && strcmp(M->id, "    ")!=0) return M->id;
 	return NULL;
 }
 

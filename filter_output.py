@@ -60,7 +60,7 @@ class Match():
         self.chains.add(line[20:22].strip())
 
     def is_from_same_structure(self, other):
-        return self.target == other.target
+        return (self.target == other.target and self.template == other.template)
 
     def is_from_same_chains(self, other):
         return self.chains == other.chains

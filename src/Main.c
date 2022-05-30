@@ -115,7 +115,7 @@ static void output(
 		A->charge
 		);
 }
-static void search(const char *filename,Jess *J,double tRmsd,double tDistance, int no_transform, int ignore_chain)
+static void search(const char *filename,Jess *J,double tRmsd,double tDistance, int no_transform, int ignore_chain, int write_filename)
 {
 	Molecule *M;
 	Superposition *sup;
@@ -172,7 +172,12 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance, i
 
 			logE=T->logE(T,Superposition_rmsd(sup),Molecule_count(M));
 
-			printf("REMARK %s ",Molecule_id(M) ? Molecule_id(M):filename);
+			if(write_filename==1){
+				printf("REMARK %s ",filename);
+			}
+			else{
+				printf("REMARK %s ",Molecule_id(M) ? Molecule_id(M):filename);
+			}
 			printf("%.3f ",Superposition_rmsd(sup));
 			printf("%s Det= %.1f log(E)~ %.2f\n",T->name(T),det,logE);
 
@@ -290,7 +295,8 @@ static void help(void)
 		"         i: include matches composed of residues belonging to\n"
 		"	     multiple chains (if template is single-chain), or\n"
 	        "	     matches with residues from a single chain\n"
-		"	     (if template has residues from multiple chains)\n\n"	
+		"	     (if template has residues from multiple chains)\n"	
+		"	  q: write filename of query instead of PDB ID from HEADER\n\n"
 		"Contact jbarker@ebi.ac.uk for licensing\n"
 		);
 
@@ -319,6 +325,7 @@ int main(int argc, char **argv)
 	//Riziotis edit
 	int no_transform=0;
 	int ignore_chain=0;
+	int write_filename=0;
 
 	if(argc<5 || argc>6) help();
 
@@ -332,6 +339,7 @@ int main(int argc, char **argv)
 			//Riziotis edit
 			else if(*s=='n') no_transform=1;
 			else if(*s=='i') ignore_chain=1;
+			else if(*s=='q') write_filename=1;
 			else help();
 		}
 	}
@@ -364,7 +372,7 @@ int main(int argc, char **argv)
 		if(strlen(s)==0) continue;
 
 		if(feedbackQ) fprintf(stderr,"%s\n",s);
-		search(buf,J,tRmsd,tDistance,no_transform,ignore_chain);
+		search(buf,J,tRmsd,tDistance,no_transform,ignore_chain,write_filename);
 	}
 
 	fclose(file);

@@ -37,10 +37,11 @@ class Match():
     def __init__(self, target='', template='', rmsd=None, score=None, remark_string='REMARK MATCH'):
         self.target = target
         self.template = template
-        self.rmsd = rmsd
+        self.rmsd = float(rmsd)
         self.score = float(score)
         self.remark_string = remark_string
         self.atoms = []
+        self.residues = []
         self.chains = set()
 
     def __repr__(self):
@@ -53,20 +54,32 @@ class Match():
     @classmethod
     def from_remark(cls, remark_string):
         fields = remark_string.strip().split()
-        return cls(fields[1], fields[2], fields[3], fields[-1], remark_string=remark_string)
+        return cls(fields[1], fields[3], fields[2], fields[-1], remark_string=remark_string)
 
     def add_atom(self, line):
         self.atoms.append(line)
         self.chains.add(line[20:22].strip())
 
+    def add_residue(self, line):
+        resname = line[17:20].strip()
+        chain = line[20:22].strip()
+        resid = line[22:26].strip()
+        res = f'{resname}_{chain}_{resid}'
+        if res not in self.residues:
+            self.residues.append(res)
+
     def is_from_same_structure(self, other):
         return (self.target == other.target and self.template == other.template)
+
+    def is_from_same_residues(self, other):
+        return self.residues == other.residues
 
     def is_from_same_chains(self, other):
         return self.chains == other.chains
 
-def get_best_match(matches):
+def get_highest_scored_match(matches):
     min_score = 999
+    best_match = None
     best_matches = []
     for match in matches:
         if match.score < min_score:
@@ -74,8 +87,21 @@ def get_best_match(matches):
             best_match = match
     return best_match
 
-def main(all_chains=False):
+def print_best_match(matches, all_instances=False):
+    unique_matches = []
+    for match_set in matches.values():
+        best_match = get_highest_scored_match(match_set)
+        unique_matches.append(best_match)
+    if all_instances:
+        for unique_match in unique_matches:
+            print(unique_match)
+    else:
+        best_match = get_highest_scored_match(unique_matches)
+        if best_match is not None:
+            print(best_match)
+    return
 
+def main(all_instances=False):
     prev_match = None
     matches = defaultdict(list)
     unique_matches = []
@@ -85,21 +111,16 @@ def main(all_chains=False):
             match = Match.from_remark(line)
         if line.startswith('ATOM') or line.startswith('HETATM'):
             match.add_atom(line)
+            match.add_residue(line)
         if line.startswith('ENDMDL'):
             if prev_match and not match.is_from_same_structure(prev_match):
-                for chain_matches in matches.values():
-                    best_match = get_best_match(chain_matches)
-                    unique_matches.append(best_match)
-                if all_chains:
-                    for unique_match in unique_matches:
-                        print(unique_match)
-                else:
-                    print(get_best_match(unique_matches))
+                print_best_match(matches, all_instances)
                 matches = defaultdict(list)
-                unique_matches = []
-            matches[':'.join(list(match.chains))].append(match)
+            matches[':'.join(list(match.residues))].append(match)
+            #matches[':'.join(list(match.chains))].append(match)
             prev_match = match
-
+    print_best_match(matches, all_instances)
+    return
 
 if __name__ == '__main__':
     main()

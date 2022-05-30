@@ -29,7 +29,7 @@ typedef struct _Molecule Molecule;
 // id(M)					The PDB code (if found)
 // ==================================================================
 
-extern Molecule *Molecule_create(FILE*);
+extern Molecule *Molecule_create(FILE*,int);
 extern void Molecule_free(Molecule*);
 extern int Molecule_count(const Molecule*);
 extern const Atom *Molecule_atom(const Molecule*,int);

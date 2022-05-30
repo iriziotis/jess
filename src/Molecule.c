@@ -44,7 +44,7 @@ struct _Molecule
 // Methods of type Molecule;
 // ==================================================================
 
-Molecule *Molecule_create(FILE *file)
+Molecule *Molecule_create(FILE *file, int ignore_endmdl)
 {
 	Node *head=NULL;
 	Node *N;
@@ -62,10 +62,14 @@ Molecule *Molecule_create(FILE *file)
 	// occur after the end of the first MODEL.
 
 	memset(buf,0,0x100);
-	while(fgets(buf,0x100,file) && strncmp(buf,"ENDMDL",6)!=0)
+	while(fgets(buf,0x100,file))
 	{
+		// If we want to include all models (for instance in biounit PDB structures)
+		if(ignore_endmdl==0 && strncmp(buf,"ENDMDL",6)==0){
+			break;
+		}
+    
 		// Get the PDB code if possible
-
 		if(strncmp(buf,"HEADER",6)==0)
 		{
 			strncpy(pdb,&buf[62],4);

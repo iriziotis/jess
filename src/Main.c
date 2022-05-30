@@ -115,7 +115,7 @@ static void output(
 		A->charge
 		);
 }
-static void search(const char *filename,Jess *J,double tRmsd,double tDistance, int no_transform, int ignore_chain, int write_filename)
+static void search(const char *filename,Jess *J,double tRmsd,double tDistance, int no_transform, int ignore_chain, int write_filename, int ignore_endmdl)
 {
 	Molecule *M;
 	Superposition *sup;
@@ -134,7 +134,7 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance, i
 		return;
 	}
 
-	M = Molecule_create(file);
+	M = Molecule_create(file, ignore_endmdl);
 
 	fclose(file);
 	if(!M)
@@ -296,7 +296,9 @@ static void help(void)
 		"	     multiple chains (if template is single-chain), or\n"
 	        "	     matches with residues from a single chain\n"
 		"	     (if template has residues from multiple chains)\n"	
-		"	  q: write filename of query instead of PDB ID from HEADER\n\n"
+		"	  q: write filename of query instead of PDB ID from HEADER\n"
+		"	  e: parse atoms from all models separated by ENDMDL (use with\n"
+	        "	     care). By default, Jess will only parse the first model\n"
 		"Contact jbarker@ebi.ac.uk for licensing\n"
 		);
 
@@ -326,6 +328,7 @@ int main(int argc, char **argv)
 	int no_transform=0;
 	int ignore_chain=0;
 	int write_filename=0;
+	int ignore_endmdl=0;
 
 	if(argc<5 || argc>6) help();
 
@@ -340,6 +343,7 @@ int main(int argc, char **argv)
 			else if(*s=='n') no_transform=1;
 			else if(*s=='i') ignore_chain=1;
 			else if(*s=='q') write_filename=1;
+			else if(*s=='e') ignore_endmdl=1;
 			else help();
 		}
 	}
@@ -372,7 +376,7 @@ int main(int argc, char **argv)
 		if(strlen(s)==0) continue;
 
 		if(feedbackQ) fprintf(stderr,"%s\n",s);
-		search(buf,J,tRmsd,tDistance,no_transform,ignore_chain,write_filename);
+		search(buf,J,tRmsd,tDistance,no_transform,ignore_chain,write_filename,ignore_endmdl);
 	}
 
 	fclose(file);

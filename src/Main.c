@@ -261,10 +261,9 @@ static Jess *init(const char *filename)
 				line,
 				s
 				);
-
+     
 			fclose(temp);
-			fclose(file);
-			exit(1);
+			continue;
 		}
 		fclose(temp);
 

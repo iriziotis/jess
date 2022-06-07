@@ -35,7 +35,7 @@ typedef struct _JessQuery JessQuery;
 extern Jess *Jess_create(void);
 extern void Jess_free(Jess*);
 extern void Jess_addTemplate(Jess*,Template*);
-extern JessQuery *Jess_query(Jess*,Molecule*,double);
+extern JessQuery *Jess_query(Jess*,Molecule*,double,double);
 
 // ==================================================================
 // Methods of type JessQuery

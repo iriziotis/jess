@@ -27,7 +27,7 @@ typedef struct _Scanner Scanner;
 // next(S)					Next result (an array of Atoms)
 // ==================================================================
 
-extern Scanner *Scanner_create(Molecule*,Template*,double);
+extern Scanner *Scanner_create(Molecule*,Template*,double,double);
 extern void Scanner_free(Scanner*);
 extern Atom **Scanner_next(Scanner*, int);
 extern double Scanner_rmsd(Scanner*);

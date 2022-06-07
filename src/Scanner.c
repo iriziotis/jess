@@ -51,7 +51,10 @@ static void CandidateSet_free(CandidateSet*);
 // result[k]			kth atom of current result set
 // region[i]			Temporary region pointer
 // count				= template->count(template)
-// threshold			The distance cutoff
+// threshold			The global distance cutoff  
+// max_total_threshold		The maximum value the distance cutoff can take
+// 				after adding the global and single-residue
+// 				distance cutoff
 //===================================================================
 
 struct _Scanner
@@ -65,13 +68,14 @@ struct _Scanner
 	Region **region;
 	int count;
 	double threshold;
+	double max_total_threshold;
 };
 
 // ==================================================================
 // Methods of type Scanner
 // ==================================================================
 
-Scanner *Scanner_create(Molecule *M, Template *T,double r)
+Scanner *Scanner_create(Molecule *M, Template *T,double r, double s)
 {
 	Scanner *S;
 	int k,n=T->count(T);
@@ -87,6 +91,7 @@ Scanner *Scanner_create(Molecule *M, Template *T,double r)
 
 	S->template=T;
 	S->threshold=r;
+	S->max_total_threshold=s;
 	S->count=n;
 
 	for(k=0; k<n; k++)
@@ -229,6 +234,10 @@ Atom **Scanner_next(Scanner *S, int ignore_chain)
 			S->template->range(S->template,j,k,&min,&max);
 
 			dynamic_threshold = S->threshold + S->template->distWeight(S->template, j) + S->template->distWeight(S->template, k);
+			// Limit threshold to a hard cutoff so execution does not suffer
+			if(dynamic_threshold > S->max_total_threshold){
+				dynamic_threshold = S->max_total_threshold;
+			}
 			min -= dynamic_threshold;
 			max += dynamic_threshold;
 			if(min<0.5) min=0.5;

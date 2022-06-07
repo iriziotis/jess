@@ -54,6 +54,7 @@ struct _JessQuery
 	Molecule *molecule;
 	Atom **atoms;
 	double threshold;
+	double max_total_threshold;
 };
 
 // ==================================================================
@@ -105,7 +106,7 @@ void Jess_addTemplate(Jess *J, Template *T)
 	J->head=n;
 }
 
-JessQuery *Jess_query(Jess *J, Molecule *M,double t)
+JessQuery *Jess_query(Jess *J, Molecule *M,double t,double s)
 {
 	JessQuery *Q;
 
@@ -113,6 +114,7 @@ JessQuery *Jess_query(Jess *J, Molecule *M,double t)
 	Q->node=J->head;
 	Q->molecule=M;
 	Q->threshold=t;
+	Q->max_total_threshold=s;
 
 	return Q;
 }
@@ -186,7 +188,8 @@ int JessQuery_next(JessQuery *Q, int ignore_chain)
 			Q->scanner=Scanner_create(
 				Q->molecule,
 				Q->node->template,
-				Q->threshold
+				Q->threshold,
+				Q->max_total_threshold
 				);
 
 			if(!Q->scanner)

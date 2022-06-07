@@ -115,7 +115,7 @@ static void output(
 		A->charge
 		);
 }
-static void search(const char *filename,Jess *J,double tRmsd,double tDistance, int no_transform, int ignore_chain, int write_filename, int ignore_endmdl)
+static void search(const char *filename,Jess *J,double tRmsd,double tDistance,double max_total_threshold,int no_transform,int ignore_chain,int write_filename,int ignore_endmdl)
 {
 	Molecule *M;
 	Superposition *sup;
@@ -127,6 +127,7 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance, i
 	const double *P,*c[2];
 	double det;
 	double logE;
+	int killswitch = 0;
 
 	if(!(file=fopen(filename,"r")))
 	{
@@ -143,9 +144,9 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance, i
 		return;
 	}
 
-	Q=Jess_query(J,M,tDistance);
+	Q=Jess_query(J,M,tDistance,max_total_threshold);
 
-	while(JessQuery_next(Q, ignore_chain))
+	while(JessQuery_next(Q, ignore_chain) && killswitch<200)
 	{
 		T=JessQuery_template(Q);
 
@@ -191,6 +192,7 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance, i
 
 			printf("ENDMDL\n\n");
 		}
+		killswitch+=1;
 	}
 
 	JessQuery_free(Q);
@@ -312,6 +314,7 @@ static void help(void)
 //	2				A file containing PDB filenames
 //	3				RMSD threshold (default 2)
 //	4				Distance threshold (default 1)
+//	5				Maximum total distance thresold
 // ==================================================================
 
 int main(int argc, char **argv)
@@ -321,6 +324,7 @@ int main(int argc, char **argv)
 	const char *s;
 	double tRmsd;
 	double tDistance;
+	double max_total_threshold;
 	Jess *J;
 	int line,k;
 	int count;
@@ -330,13 +334,13 @@ int main(int argc, char **argv)
 	int write_filename=0;
 	int ignore_endmdl=0;
 
-	if(argc<5 || argc>6) help();
+	if(argc<6 || argc>7) help();
 
 	// Get optional flags
 
-	if(argc==6)
+	if(argc==7)
 	{
-		for(s=argv[5]; *s; s++)
+		for(s=argv[6]; *s; s++)
 		{
 			if(*s=='f') feedbackQ=1;
 			//Riziotis edit
@@ -351,6 +355,7 @@ int main(int argc, char **argv)
 	J=init(argv[1]);
 	tRmsd=atof(argv[3]);
 	tDistance=atof(argv[4]);
+	max_total_threshold=atof(argv[5]);
 
 	if(strcmp(argv[2],"-")==0)
 	{
@@ -376,7 +381,7 @@ int main(int argc, char **argv)
 		if(strlen(s)==0) continue;
 
 		if(feedbackQ) fprintf(stderr,"%s\n",s);
-		search(buf,J,tRmsd,tDistance,no_transform,ignore_chain,write_filename,ignore_endmdl);
+		search(buf,J,tRmsd,tDistance,max_total_threshold,no_transform,ignore_chain,write_filename,ignore_endmdl);
 	}
 
 	fclose(file);

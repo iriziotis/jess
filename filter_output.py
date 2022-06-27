@@ -91,6 +91,9 @@ def print_best_match(matches, all_instances=False):
     unique_matches = []
     for match_set in matches.values():
         best_match = get_highest_scored_match(match_set)
+        # This is to discard self matches when cross-comparing templates
+        if best_match.template == best_match.target:
+            continue
         unique_matches.append(best_match)
     if all_instances:
         for unique_match in unique_matches:

@@ -204,7 +204,7 @@ static Jess *init(const char *filename)
 {
 	FILE *file;
 	FILE *temp;
-	char buf[0x100];
+	char buf[0x200];
 	const char *s;
 	Template *T;
 	Jess *J;
@@ -221,7 +221,7 @@ static Jess *init(const char *filename)
 
 	J=Jess_create();
 	line=0;
-	while(fgets(buf,0x100,file))
+	while(fgets(buf,0x200,file))
 	{
 		line++;
 

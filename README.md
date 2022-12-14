@@ -1,4 +1,4 @@
-Jess is Copyright (c) Jonathan Barker, 2002.
+Jess is Copyright (c) Jonathan Barker, 2002.  
 Now maintained and modified by Ioannis Riziotis (riziotis@ebi.ac.uk)
 
 Last updated 14/12/2022
@@ -30,17 +30,16 @@ As a rough estimate the distance cutoff should be 1.5-4 times
 the RMSD cutoff. But if you make it very large execution 
 time will suffer. The smaller the better!
 
-[flags]: optional flags as a string with no spaces:  
-	 f: see PDB filenames in progress on stderr  
-	 n: do not transform coordinates of hit into
-	    the template coordinate frame  
-	 i: include matches composed of residues belonging to
-	    multiple chains (if template is single-chain), or
-	    matches with residues from a single chain
-	    (if template has residues from multiple chains)  
-	 q: write filename of query instead of PDB ID from HEADER  
-	 e: parse atoms from all models separated by ENDMDL (use with
-	     care). By default, Jess will only parse the first model
+[flags] : optional flags as a string with no spaces:  
+>`f` : see PDB filenames in progress on stderr  
+>`n` : do not transform coordinates of hit into	the template coordinate frame  
+>`i` : include matches composed of residues belonging to
+      multiple chains (if template is single-chain), or
+	  matches with residues from a single chain
+	  (if template has residues from multiple chains)  
+>`q` : write filename of query instead of PDB ID from HEADER  
+>`e` : parse atoms from all models separated by ENDMDL (use with
+	  care). By default, Jess will only parse the first model
 
 Example:
 

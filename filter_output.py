@@ -104,7 +104,9 @@ def print_best_match(matches, all_instances=False):
             print(best_match)
     return
 
-def main(all_instances=False):
+def main(all_instances=True):
+    """all_distances: If True, then all unique matches from diffent chains 
+    are returned"""
     prev_match = None
     matches = defaultdict(list)
     unique_matches = []
@@ -120,7 +122,6 @@ def main(all_instances=False):
                 print_best_match(matches, all_instances)
                 matches = defaultdict(list)
             matches[':'.join(list(match.residues))].append(match)
-            #matches[':'.join(list(match.chains))].append(match)
             prev_match = match
     print_best_match(matches, all_instances)
     return

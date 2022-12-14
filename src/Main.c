@@ -284,12 +284,17 @@ static void help(void)
 		"Jess version 0.4(gamma)\n"
 		"Copyright (c) Jonathan Barker, 2002\n"
 		"Command line syntax:\n\n"
-		"   jess <T> <S> <r> <d> [F]\n\n"
+		"   jess <T> <S> <r> <d> <m> [F]\n\n"
 		"where\n\n"
 		"   <T> is the name of the template list file\n"
 		"   <S> is a file containing a list of PDB filenames (use - for stdin)\n"
 		"   <r> is the RMSD threshold\n"
 		"   <d> is the distance cutoff\n"
+		"   <m>: the maximum allowed template/query atom distance\n"
+		"	 after adding the global distance cutoff and the \n"
+		"	 individual atom distance cutoff defined in the\n"
+		"	 temperature field of the ATOM record in the template\n"
+		"	 file.\n"
 		"   [F] are optional flags as a string with no spaces:\n"
 		"         f: see PDB filenames in progress on stderr\n"
 		"         n: do not transform coordinates of hit into\n"
@@ -301,7 +306,7 @@ static void help(void)
 		"	  q: write filename of query instead of PDB ID from HEADER\n"
 		"	  e: parse atoms from all models separated by ENDMDL (use with\n"
 	        "	     care). By default, Jess will only parse the first model\n"
-		"Contact jbarker@ebi.ac.uk for licensing\n"
+		"Contact jbarker@ebi.ac.uk or riziotis@ebi.ac.uk for licensing\n"
 		);
 
 	exit(1);

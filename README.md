@@ -50,7 +50,7 @@ time will suffer. The smaller the better!
 Example:
 
 `cd examples`  
-`../jess templates testfiles 2 3 3 > output`  
+`../jess templates testfiles 2 3 3 0 > output`  
 
 The output file is a flat file containing PDB fragments 
 preceded by a single record of the form

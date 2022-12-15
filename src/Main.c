@@ -116,7 +116,7 @@ static void output(
 		A->charge
 		);
 }
-static void search(const char *filename,Jess *J,double tRmsd,double tDistance,double max_total_threshold,int no_transform,int ignore_chain,int write_filename,int ignore_endmdl)
+static void search(const char *filename,Jess *J,double tRmsd,double tDistance,double max_total_threshold,int no_transform,int ignore_chain,int write_filename,int ignore_endmdl, float conservation_cutoff)
 {
 	Molecule *M;
 	Superposition *sup;
@@ -136,7 +136,7 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance,do
 		return;
 	}
 
-	M = Molecule_create(file, ignore_endmdl);
+	M = Molecule_create(file, ignore_endmdl, conservation_cutoff);
 
 	fclose(file);
 	if(!M)
@@ -330,6 +330,7 @@ int main(int argc, char **argv)
 	double tRmsd;
 	double tDistance;
 	double max_total_threshold;
+	float conservation_cutoff;
 	Jess *J;
 	int line,k;
 	int count;
@@ -339,13 +340,13 @@ int main(int argc, char **argv)
 	int write_filename=0;
 	int ignore_endmdl=0;
 
-	if(argc<6 || argc>7) help();
+	if(argc<7 || argc>8) help();
 
 	// Get optional flags
 
-	if(argc==7)
+	if(argc==8)
 	{
-		for(s=argv[6]; *s; s++)
+		for(s=argv[7]; *s; s++)
 		{
 			if(*s=='f') feedbackQ=1;
 			//Riziotis edit
@@ -361,6 +362,7 @@ int main(int argc, char **argv)
 	tRmsd=atof(argv[3]);
 	tDistance=atof(argv[4]);
 	max_total_threshold=atof(argv[5]);
+	conservation_cutoff=atof(argv[6]);
 
 	if(strcmp(argv[2],"-")==0)
 	{
@@ -386,7 +388,7 @@ int main(int argc, char **argv)
 		if(strlen(s)==0) continue;
 
 		if(feedbackQ) fprintf(stderr,"%s\n",s);
-		search(buf,J,tRmsd,tDistance,max_total_threshold,no_transform,ignore_chain,write_filename,ignore_endmdl);
+		search(buf,J,tRmsd,tDistance,max_total_threshold,no_transform,ignore_chain,write_filename,ignore_endmdl,conservation_cutoff);
 	}
 
 	fclose(file);

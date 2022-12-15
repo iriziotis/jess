@@ -44,7 +44,7 @@ struct _Molecule
 // Methods of type Molecule;
 // ==================================================================
 
-Molecule *Molecule_create(FILE *file, int ignore_endmdl)
+Molecule *Molecule_create(FILE *file, int ignore_endmdl, float conservation_cutoff)
 {
 	Node *head=NULL;
 	Node *N;
@@ -85,6 +85,15 @@ Molecule *Molecule_create(FILE *file, int ignore_endmdl)
 
 			pA = (Atom*)calloc(1,sizeof(Atom));
 			memcpy(pA,&A,sizeof(Atom));
+
+			// If there is a user-defined conservation score cutoff in 
+			// the temperature factor field, ignore this atom if its
+			// score is lower than the cutoff
+			
+			if(conservation_cutoff>0 && pA->tempFactor<conservation_cutoff)
+			{
+				continue;
+			}
 
 			N = (Node*)calloc(1,sizeof(Node));
 			N->next=head;

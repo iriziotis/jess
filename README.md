@@ -17,18 +17,18 @@ Compile with something like:
 
 ### Usage
 
-`jess [template-list] [target-list] [rmsd] [distance] [max-dynamic-distance] [conservation_cutoff] [flags]`
+`jess [template-list] [target-list] [rmsd] [distance] [max-dynamic-distance] [conservation-cutoff] [flags]`
 
 * `template-list`: a list of filenames of TESS templates
 * `target-list`: is a list of filenames of PDB files to search
 * `rmsd`: the RMSD cutoff at which results are reported
 * `distance`: the global distance cutoff used to guide the search
-* `max dynamic distance`: the maximum allowed template/query atom distance 
+* `max-dynamic-distance`: the maximum allowed template/query atom distance 
 			  after adding the global distance cutoff and the 
 			  individual atom distance cutoff defined in the
 			  temperature field of the ATOM record in the template
 			  file.
-* `conservation_cutoff`: a cutoff defined in the b-factor field of the query structure.
+* `conservation-cutoff`: a cutoff defined in the b-factor field of the query structure.
                          Atoms whose value in the b-factor field is lower than this cutoff
                          will be ignored.
 

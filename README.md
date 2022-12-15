@@ -17,7 +17,7 @@ Compile with something like:
 
 ### Usage
 
-`jess [template-list] [target-list] [rmsd] [distance] [max-dynamic-distance] [flags]`
+`jess [template-list] [target-list] [rmsd] [distance] [max-dynamic-distance] [conservation_cutoff] [flags]`
 
 * `template-list`: a list of filenames of TESS templates
 * `target-list`: is a list of filenames of PDB files to search
@@ -28,6 +28,9 @@ Compile with something like:
 			  individual atom distance cutoff defined in the
 			  temperature field of the ATOM record in the template
 			  file.
+* `conservation_cutoff`: a cutoff defined in the b-factor field of the query structure.
+                         Atoms whose value in the b-factor field is lower than this cutoff
+                         will be ignored.
 
 As a rough estimate the distance cutoff should be 1.5-4 times
 the RMSD cutoff. But if you make it very large execution 

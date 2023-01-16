@@ -147,7 +147,7 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance,do
 
 	Q=Jess_query(J,M,tDistance,max_total_threshold);
 
-	while(JessQuery_next(Q, ignore_chain) && killswitch<200)
+	while(JessQuery_next(Q, ignore_chain) && killswitch<1000)
 	{
 		T=JessQuery_template(Q);
 

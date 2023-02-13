@@ -51,7 +51,7 @@ static const char *TessAtom_convertResidue(char p)
 
 	int k;
 	struct _dummy {char one; const char *three; };
-	static const struct _dummy table[20] =
+	static const struct _dummy table[21] =
 	{
 		{ 'A',"ALA" },
 		{ 'C',"CYS" },
@@ -72,11 +72,12 @@ static const char *TessAtom_convertResidue(char p)
 		{ 'T',"THR" },
 		{ 'V',"VAL" },
 		{ 'W',"TRP" },
-		{ 'Y',"TYR" }
+		{ 'Y',"TYR" },
+		{ 'X',"XXX" }
 	};
 
-	for(k=0; k<20 && p!=table[k].one; k++);
-	return k<20 ? table[k].three:NULL;
+	for(k=0; k<21 && p!=table[k].one; k++);
+	return k<21 ? table[k].three:NULL;
 }
 
 TessAtom *TessAtom_create(const char *s)

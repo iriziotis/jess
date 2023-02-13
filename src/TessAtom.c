@@ -236,7 +236,7 @@ TessAtom *TessAtom_create(const char *s)
 			// It must be a single-letter residue code.
 			// Check it out...
 			
-			for(m=0; m<4; m++){
+			for(m=0; m<=4; m++){
 				if(isspace(q[m])){
 					break;
 				}

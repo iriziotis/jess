@@ -27,7 +27,7 @@ Compile with something like:
 			  after adding the global distance cutoff and the 
 			  individual atom distance cutoff defined in the
 			  temperature field of the ATOM record in the template
-			  file.
+			  file. To override, set it equal to "distance".
 
 As a rough estimate the distance cutoff should be 1.5-4 times
 the RMSD cutoff. But if you make it very large execution 
@@ -52,7 +52,7 @@ Example:
 The output file is a flat file containing PDB fragments 
 preceded by a single record of the form
 
-`REMARK pdb-code rmsd template-file [some debugging info]`
+`REMARK pdb-code rmsd template-file [debugging info]`
 
 where pdb-code is the PDB code of the hit file, rmsd is 
 the rmsd after optimal superposition with the template and
@@ -80,3 +80,9 @@ optimal aligments at a specific atom set in a given
 template-target pair. If you want to keep only the best hit,
 pipe the output to the 'filter_jessout.py' script.
 
+### Licence
+
+This software is provided for free under the [MIT License](https://choosealicense.com/licenses/mit/).
+The Jess code was written by Jonathan Barker and is maintained by Ioannis Riziotis.
+
+This software was developed at EMBL-EBI in the [Thornton Group](https://www.ebi.ac.uk/research/thornton/).

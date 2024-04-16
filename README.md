@@ -97,7 +97,7 @@ pipe the output to the 'filter_jessout.py' script.
 
 ### Licence
 
-The Jess code was written by Jonathan Barker ((c) 2002) 
+The Jess code was originally written by Jonathan Barker (© 2002))
 and is now maintained and updated by Ioannis Riziotis [(e-mail)](mailto:ioannis.riziotis@crick.ac.uk).
 
 This software was developed at EMBL-EBI in the [Thornton Group](https://www.ebi.ac.uk/research/thornton/)

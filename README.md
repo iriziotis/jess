@@ -1,10 +1,21 @@
 ## Jess: A 3D template searching program
 
-Jess is Copyright (c) of Jonathan Barker, 2002.  
-Now maintained and modified by Ioannis Riziotis (riziotis@ebi.ac.uk).  
+Jess is a program that does 3D template searching on protein structures. The
+idea is that the user provides one or more "templates", which consist of the 3D
+coordinates of a group of atoms (e.g. a ligand binding motif), plus one or more
+target structures in PDB format, and the program will try to find instances of each 
+template on each target. The output is a PDB file constisting of the coordinates of
+each hit, transformed so that they superpose onto the coordindates of the template,
+and each hit is scored with a logE value, a probabilistic measure of goodness-of-fit.
+
 For details on the algorithm, please read the [paper](10.1093/bioinformatics/btg226).  
 
-Last updated 14/12/2022
+Template nomenclature is based on the PDB format. For details on how to format templates,
+please read the TESS (the predecesor of Jess) [paper](https://doi.org/10.1002%2Fpro.5560061104).
+
+A detailed guide on template nomenclature will be released soon.
+
+Last updated 16/4/2024
 
 ### Installation
 
@@ -23,15 +34,19 @@ Compile with something like:
 * `target-list`: is a list of filenames of PDB files to search
 * `rmsd`: the RMSD cutoff at which results are reported
 * `distance`: the global distance cutoff used to guide the search
-* `max dynamic distance`: the maximum allowed template/query atom distance 
-			  after adding the global distance cutoff and the 
-			  individual atom distance cutoff defined in the
-			  temperature field of the ATOM record in the template
-			  file. To override, set it equal to "distance".
+* `max-dynamic-distance`: maximum per-atom distance cutoff (details below). Set equal
+                          to "distance" to override.
 
-As a rough estimate the distance cutoff should be 1.5-4 times
-the RMSD cutoff. But if you make it very large execution 
-time will suffer. The smaller the better!
+Important!
+* As a rough estimate the distance cutoff should be 1.5-4 times
+the RMSD cutoff. If you make it very large, the search becomes more
+permissive, but execution time will suffer and the chance of finding spurious hits will increase.
+* About the "max-dynamic-distance" argument: The user can define a dynamic matching distance cutoff
+on a per-atom basis, that is added onto the global distance cutoff (if for example a single residue is flexible 
+and is alowed to be matched with more relaxed spatial constraints). This dynamic distance of an atom can 
+be optionally defined on the B-factor field of the ATOM record in the template. This argument is
+the maximum allowed dynamic distance. To override dynamic distance completely, you can set this equal 
+to the global distance argument.
 
 [flags] : optional flags as a string with no spaces:  
 * `f` : see PDB filenames in progress on stderr  
@@ -82,7 +97,8 @@ pipe the output to the 'filter_jessout.py' script.
 
 ### Licence
 
-This software is provided for free under the [MIT License](https://choosealicense.com/licenses/mit/).
-The Jess code was written by Jonathan Barker and is maintained by Ioannis Riziotis.
+The Jess code was written by Jonathan Barker ((c) 2002) 
+and is now maintained and updated by Ioannis Riziotis [(e-mail)](mailto:ioannis.riziotis@crick.ac.uk).
 
-This software was developed at EMBL-EBI in the [Thornton Group](https://www.ebi.ac.uk/research/thornton/).
+This software was developed at EMBL-EBI in the [Thornton Group](https://www.ebi.ac.uk/research/thornton/)
+and is provided for free under an [MIT License](https://choosealicense.com/licenses/mit/)

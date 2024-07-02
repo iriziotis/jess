@@ -193,7 +193,7 @@ static void search(const char *filename,Jess *J,double tRmsd,double tDistance,do
 
 			printf("ENDMDL\n\n");
 		}
-		killswitch+=1;
+		//killswitch+=1;
 	}
 
 	JessQuery_free(Q);
